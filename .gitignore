@@ -1,0 +1,4 @@
+playground/
+.DS_Store
+./model/Florence-2-base
+__pycache__
