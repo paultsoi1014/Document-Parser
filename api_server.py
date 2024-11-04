@@ -14,6 +14,19 @@ app = FastAPI()
 document_parser = PhiloDocumentParser()
 
 
+@app.get("/health")
+def health_check():
+    """
+    Endpoint to check the health status of the application
+
+    Returns
+    -------
+    dict
+        A dictionary indicating the status of the application
+    """
+    return {"status": "OK"}
+
+
 @app.post("/parse/pdf")
 async def parse_pdf(file: UploadFile = File(...)):
     if not file.filename.endswith(".pdf"):
