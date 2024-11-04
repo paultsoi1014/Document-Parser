@@ -34,7 +34,7 @@ class FlorenceVisionModel:
         model_path = os.environ.get("FLORENCE_PATH")
 
         # Check if florence model exist
-        if not os.path.exist(model_path):
+        if not os.path.exists(model_path):
             self.vision_model = AutoModelForCausalLM.from_pretrained(
                 "microsoft/Florence-2-base",
                 trust_remote_code=True,
