@@ -16,7 +16,6 @@ document_parser = PhiloDocumentParser()
 
 @app.post("/parse/pdf")
 async def parse_pdf(file: UploadFile = File(...)):
-    print("Hello World")
     if not file.filename.endswith(".pdf"):
         raise HTTPException(status_code=400, detail="Only PDF files are accepted.")
 
@@ -58,4 +57,4 @@ async def parse_doc_ppt(file: UploadFile = File(...)):
 
 
 if __name__ == "__main__":
-    uvicorn.run("api_server:app", host="0.0.0.0", port=8001, reload=True)
+    uvicorn.run("api_server:app", host="0.0.0.0", port=8001)
