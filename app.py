@@ -28,6 +28,8 @@ class PhiloDocumentParser:
     model
     """
 
+    __slot__ = ["converter", "florence"]
+
     def __init__(self):
         """
         Initializes the PhiloDocumentParser, loading necessary models for parsing
@@ -36,6 +38,9 @@ class PhiloDocumentParser:
 
         Attributes
         ----------
+        converter : PdfConverter
+            An instance of PdfConverter for transforming PDF content into a
+            markdown format
         florence : FlorenceVisionModel
             An instance of the Florence vision model for image-to-text conversion
         """
@@ -96,7 +101,6 @@ class PhiloDocumentParser:
             corresponding text representations
         """
         for filename, image in images.items():
-            print(filename)
             # Convert image into text
             text_representation = self.parse_img(
                 image, image_name=filename, task_prompt="<MORE_DETAILED_CAPTION>"
@@ -110,7 +114,7 @@ class PhiloDocumentParser:
 
         return document
 
-    def parse_pdf(self, input_data: Optional[Tuple[str, bytes]]):
+    def parse_pdf(self, input_data: Optional[Tuple[str, bytes]]) -> DocumentResponse:
         """
         Parses a PDF document and extracts its content, including images,
         converting them to text
@@ -122,7 +126,8 @@ class PhiloDocumentParser:
 
         Returns
         -------
-
+        DocumentResponse
+            The parsed result containing extracted text and images
         """
         # Check input data format
         if isinstance(input_data, str) and input_data.endswith(".pdf"):

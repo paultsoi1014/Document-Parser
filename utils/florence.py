@@ -8,15 +8,15 @@ from transformers import AutoProcessor, AutoModelForCausalLM
 
 
 class FlorenceVisionModel:
-    """
-    A class that encapsulates the Florence-2 model for image-to-text conversion.
-    This model processes images and associated text prompts to generate descriptive
-    text based on the visual input
-    """
+
+    __slot__ = ["device", "vision_model", "vision_processor"]
 
     def __init__(self):
         """
-        Initializes the FlorenceVisionModel by loading the model and processor
+        Initializes the FlorenceVisionModel for image-to-text conversion by
+        loading the model and processor.  This model processes images and
+        associated text prompts to generate descriptive text based on the visual
+        input
 
         Attributes
         ----------

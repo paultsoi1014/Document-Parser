@@ -25,7 +25,23 @@ class DocumentResponse(BaseModel):
         image_name: str,
         image_data: Union[str, PILImage.Image],
         image_info: Union[Dict[str, Any], None] = {},
-    ):
+    ) -> None:
+        """
+        Adds an image to the DocumentResponse by converting it to a base64
+        encoded string and appending an ImageResponse object to the `images`
+        list
+
+        Parameters
+        ----------
+        image_name : str
+            The name or identifier of the image
+        image_data : Union[str, PILImage.Image]
+            The image data, either as a base64 encoded string or a PIL Image
+            instance
+        image_info : Union[Dict[str, Any], None], optional
+            Optional metadata associated with the image (default is an empty
+            dictionary)
+        """
         if isinstance(image_data, str):
             # Decode image if image is base64 encoded
             image_bytes = base64.b64decode(image_data)
