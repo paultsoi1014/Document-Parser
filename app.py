@@ -96,13 +96,14 @@ class PhiloDocumentParser:
             corresponding text representations
         """
         for filename, image in images.items():
+            print(filename)
             # Convert image into text
             text_representation = self.parse_img(
                 image, image_name=filename, task_prompt="<MORE_DETAILED_CAPTION>"
             ).text
 
             # Pattern to find the image by name and replace with the representation
-            pattern = rf"!\[{filename}\]\({filename}\)"
+            pattern = rf"!\[]\({filename}\)"
 
             # Replace with the text representation in the markdown text
             document = re.sub(pattern, text_representation, document)
