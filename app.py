@@ -10,20 +10,15 @@ from pydantic import BaseModel
 from PIL import Image as PILImage
 from typing import Any, Optional, Tuple, List
 
-from marker.models import load_all_models
-from marker.convert import convert_single_pdf
+from marker.converters.pdf import PdfConverter
+from marker.models import create_model_dict
+from marker.output import text_from_rendered
 
 from utils.florence import FlorenceVisionModel
 from utils.response import DocumentResponse
 
 
 load_dotenv(override=True)
-
-
-class ModelState(BaseModel):
-    model_list: Any = None
-    vision_model: Any = None
-    vision_processor: Any = None
 
 
 class PhiloDocumentParser:
@@ -41,22 +36,14 @@ class PhiloDocumentParser:
 
         Attributes
         ----------
-        model_state : ModelState
-            Holds the state of the models used for parsing and image processing
         florence : FlorenceVisionModel
             An instance of the Florence vision model for image-to-text conversion
         """
-        # Init model state
-        self.model_state = ModelState()
+        # Init converter for converting PDF into markdown format
+        self.converter = PdfConverter(artifact_dict=create_model_dict())
 
-        # Load detection, layout, OCR model from marker
-        self.model_state.model_list = load_all_models()
-
-        # init florence vision language model
+        # Init florence vision language model for image to text conversion
         self.florence = FlorenceVisionModel()
-        self.model_state.vision_model, self.model_state.vision_processor = (
-            self.florence.get_vision_model_processor()
-        )
 
     @staticmethod
     def _encode_image(images: dict, pdf_result: DocumentResponse) -> None:
@@ -90,9 +77,7 @@ class PhiloDocumentParser:
 
             return None
 
-    def _image_to_text_conversion(
-        self, document: str, images: List[PILImage.Image]
-    ) -> str:
+    def _image_to_text_conversion(self, document: str, images: List[PILImage.Image]):
         """
         Converts images in the document to text and replaces image references
         with their textual descriptions.
@@ -124,7 +109,7 @@ class PhiloDocumentParser:
 
         return document
 
-    def parse_pdf(self, input_data: Optional[Tuple[str, bytes]]) -> DocumentResponse:
+    def parse_pdf(self, input_data: Optional[Tuple[str, bytes]]):
         """
         Parses a PDF document and extracts its content, including images,
         converting them to text
@@ -136,8 +121,7 @@ class PhiloDocumentParser:
 
         Returns
         -------
-        DocumentResponse
-            The parsed result containing extracted text and images
+
         """
         # Check input data format
         if isinstance(input_data, str) and input_data.endswith(".pdf"):
@@ -156,9 +140,8 @@ class PhiloDocumentParser:
             cleanup_tempfile = True
 
         # Convert the document content into markdown
-        full_text, images, out_meta = convert_single_pdf(
-            input_path, self.model_state.model_list
-        )
+        rendered = self.converter(input_path)
+        full_text, _, images = text_from_rendered(rendered)
 
         # Image to text conversion
         full_text_refined = self._image_to_text_conversion(
@@ -166,7 +149,7 @@ class PhiloDocumentParser:
         )
 
         # Store parsed result
-        parse_pdf_result = DocumentResponse(text=full_text_refined, metadata=out_meta)
+        parse_pdf_result = DocumentResponse(text=full_text_refined)
         self._encode_image(images, parse_pdf_result)
 
         # Delete temporarily file
@@ -227,9 +210,8 @@ class PhiloDocumentParser:
             input_path = output_pdf_path
 
         # Convert the document content into markdown
-        full_text, images, out_meta = convert_single_pdf(
-            input_path, self.model_state.model_list
-        )
+        rendered = self.converter(input_path)
+        full_text, _, images = text_from_rendered(rendered)
 
         # Image to text conversion
         full_text_refined = self._image_to_text_conversion(
@@ -237,9 +219,7 @@ class PhiloDocumentParser:
         )
 
         # Store parsed result
-        parse_doc_ppt_result = DocumentResponse(
-            text=full_text_refined, metadata=out_meta
-        )
+        parse_doc_ppt_result = DocumentResponse(text=full_text_refined)
         self._encode_image(images, parse_doc_ppt_result)
 
         if input_data != input_path:
@@ -303,8 +283,5 @@ class PhiloDocumentParser:
 
 if __name__ == "__main__":
     document_parser = PhiloDocumentParser()
-    parsed_result = document_parser.parse_pdf("./playground/test_3.pdf")
-
-    # Write the content to a .md file
-    with open("./playground/temp_2.md", "w") as file:
-        file.write(parsed_result.text)
+    parse_result = document_parser.parse_pdf("./playground/test_3.pdf")
+    print(parse_result.text)
