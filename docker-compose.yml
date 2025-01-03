@@ -2,16 +2,16 @@ services:
   philoparser:
     build:
       context: .
-      dockerfile: Dockerfile  
+      dockerfile: Dockerfile
     ports:
       - "8001:8001"
     volumes:
-      - ./model:/app/model 
+      - ./model:/app/model
     restart: always
     deploy:
       resources:
         reservations:
           devices:
             - driver: nvidia
-              device_ids: ['3']
-              capabilities: [gpu]
+              device_ids: [ '0' ]
+              capabilities: [ gpu ]
