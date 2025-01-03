@@ -70,4 +70,4 @@ async def parse_doc_ppt(file: UploadFile = File(...)):
 
 
 if __name__ == "__main__":
-    uvicorn.run("api_server:app", host="0.0.0.0", port=8001)
+    uvicorn.run("api_server:app", host="0.0.0.0", port=8008)

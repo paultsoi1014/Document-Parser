@@ -33,6 +33,6 @@ RUN uv pip install --system -r requirements.txt
 
 # Clone florence repository 
 RUN git clone https://huggingface.co/microsoft/Florence-2-base
-RUN mv -r Florence-2-base ./model/Florence-2-base
+RUN mv Florence-2-base ./model/Florence-2-base
 
 CMD ["python3", "api_server.py"]
