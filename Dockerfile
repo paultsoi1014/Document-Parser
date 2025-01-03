@@ -6,6 +6,7 @@ RUN apt-get update -y && \
     add-apt-repository ppa:deadsnakes/ppa -y && \
     apt-get update -y && \
     apt-get install -y python3.10 python3.10-venv python3.10-dev python3-pip && \
+    apt-get install -y --no-install-recommends curl ca-certificates && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Upgrade pip to the latest version
