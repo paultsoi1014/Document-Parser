@@ -2,7 +2,7 @@ FROM nvidia/cuda:12.2.0-devel-ubuntu22.04
 
 # Update package lists and install Python 3.10, pip, and essential tools
 RUN apt-get update -y && \
-    apt-get install -y software-properties-common wget git ffmpeg libsm6 libxext6 && \
+    apt-get install -y software-properties-common wget git ffmpeg libsm6 libxext6 git-lfs && \
     add-apt-repository ppa:deadsnakes/ppa -y && \
     apt-get update -y && \
     apt-get install -y python3.10 python3.10-venv python3.10-dev python3-pip && \
@@ -32,8 +32,7 @@ ENV PATH="/root/.local/bin/:$PATH"
 RUN uv pip install --system -r requirements.txt
 
 # Clone florence repository 
-RUN git lfs install &&\
-    git clone https://huggingface.co/microsoft/Florence-2-base
+RUN git clone https://huggingface.co/microsoft/Florence-2-base
 RUN mv -r Florence-2-base ./model/Florence-2-base
 
 CMD ["python3", "api_server.py"]
