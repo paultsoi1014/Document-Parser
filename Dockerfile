@@ -28,8 +28,8 @@ RUN sh /uv-installer.sh && rm /uv-installer.sh
 ENV PATH="/root/.local/bin/:$PATH"
 
 # Clone florence repository 
-RUN git clone https://huggingface.co/microsoft/Florence-2-base /tmp/repo
-RUN mkdir -p /model && mv /tmp/repo/* /model && rm -rf /tmp/repo
+RUN mkdir -p /model
+RUN git clone https://huggingface.co/microsoft/Florence-2-base /model
 
 # Install Python dependencies with uv tool
 RUN uv pip install --system -r requirements.txt
