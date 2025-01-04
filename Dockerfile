@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.3.1-base-ubuntu20.04
+FROM nvidia/cuda:12.2.0-devel-ubuntu22.04
 
 # Update package lists and install Python 3.10, pip, and essential tools
 RUN apt-get update -y && \
