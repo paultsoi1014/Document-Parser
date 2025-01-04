@@ -1,7 +1,7 @@
 import requests 
 
 filepath = # Path to the file
-url = "http://127.0.0.1:8001/parse/pdf"
+url = "http://127.0.0.1:8008/parse/pdf"
 
 with open(filepath, "rb") as file:
     response = requests.post(url, files={"file": file})
