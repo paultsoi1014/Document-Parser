@@ -3,12 +3,24 @@
 ## Table of Contents
 
 - [Overview](#Overview)
+- [Prerequisites](#Prerequisites)
 - [Installation](#installation)
 - [Usage](#usage)
 
 ## Overview 
 A backbone that utilize a series of object detection models to parse documents 
 for various application including structure aware OCR or for RAG
+
+## Prerequest
+Before installing and using the document parser, ensure that the following components are set up and running:
+
+### 1. Florence-2 Vision Model
+Florence-2 is an advanced vision foundation model used for visual understanding. Follow these steps to set it up:
+```bash
+# Make sure git-lfs is installed (https://git-lfs.com)
+git lfs install
+git clone https://huggingface.co/microsoft/Florence-2-base
+```
 
 ## Installation
 ### 1. Clone the repository:
