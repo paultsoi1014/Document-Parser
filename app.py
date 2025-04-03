@@ -21,7 +21,7 @@ from utils.response import DocumentResponse
 load_dotenv(override=True)
 
 
-class PhiloDocumentParser:
+class DocumentParser:
     """
     A class to parse various document formats (PDF, DOC, PPT) and convert images
     within them into textual descriptions using the marker and Florence-2 vision

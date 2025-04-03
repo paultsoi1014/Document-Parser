@@ -1,5 +1,5 @@
 services:
-  philoparser:
+  documentparser:
     build:
       context: .
       dockerfile: Dockerfile
