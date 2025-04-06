@@ -2,16 +2,15 @@ import uvicorn
 
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel
 from typing import Optional
 
-from app import PhiloDocumentParser
+from app import DocumentParser
 
 # Instantiate the FastAPI app
 app = FastAPI()
 
 # Initialize document parser instance
-document_parser = PhiloDocumentParser()
+document_parser = DocumentParser()
 
 
 @app.get("/health")
